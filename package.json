@@ -6,7 +6,7 @@
   "publisher": "godronus",
   "icon": "foldclient.png",
   "engines": {
-    "vscode": "^1.31.0"
+    "vscode": "^1.30.0"
   },
   "categories": [
     "Other"
@@ -53,11 +53,11 @@
       "title": "foldClient cleint name configuration",
       "type": "object",
       "properties": {
-          "foldclient.visibleClients": {
-              "type": "object",
-              "description": "Settings used for custom folding.",
-              "default": []
-          }
+        "foldclient.visibleClients": {
+          "type": "object",
+          "description": "Settings used for custom folding.",
+          "default": []
+        }
       }
     },
     "configurationDefaults": {}
