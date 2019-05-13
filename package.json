@@ -2,7 +2,7 @@
   "name": "foldclient",
   "displayName": "Fold Client code",
   "description": "Additional fold commands",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "publisher": "godronus",
   "icon": "foldclient.png",
   "engines": {
@@ -16,7 +16,11 @@
     "onCommand:godronus-foldClient.named",
     "onCommand:godronus-foldClient.hide",
     "onCommand:godronus-foldClient.setClients",
-    "onCommand:godronus-foldClient.wrapWithRegion"
+    "onCommand:godronus-foldClient.wrapWithRegion",
+    "onCommand:godronus-foldClient.wrapWithAllRegions",
+    "onCommand:godronus-foldClient.commentLines",
+    "onCommand:godronus-foldClient.cleanRegionComments",
+    "onCommand:godronus-foldClient.regionsNamed"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -40,12 +44,52 @@
         "command": "godronus-foldClient.setClients",
         "title": "Set Clients List",
         "category": "Fold Client"
+      },
+      {
+        "command": "godronus-foldClient.commentLines",
+        "title": "Comment All Lines",
+        "category": "Fold Client"
+      },
+      {
+        "command": "godronus-foldClient.cleanRegionComments",
+        "title": "Clean Region Comments",
+        "category": "Fold Client"
+      },
+      {
+        "command": "godronus-foldClient.regionsNamed",
+        "title": "Set Client List & Hide Other Regions",
+        "category": "Fold Client"
       }
     ],
     "keybindings": [
       {
         "command": "godronus-foldClient.wrapWithRegion",
         "key": "ctrl+m ctrl+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "godronus-foldClient.wrapWithAllRegions",
+        "key": "ctrl+t ctrl+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "godronus-foldClient.commentLines",
+        "key": "ctrl+m ctrl+/",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "godronus-foldClient.cleanRegionComments",
+        "key": "ctrl+c ctrl+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "godronus-foldClient.all",
+        "key": "ctrl+r ctrl+a",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "godronus-foldClient.regionsNamed",
+        "key": "ctrl+r ctrl+n",
         "when": "editorTextFocus"
       }
     ],

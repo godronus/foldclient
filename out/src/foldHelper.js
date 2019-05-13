@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
-const regionStartTag = new RegExp('#region');
-const regionEndTag = new RegExp('#endregion');
+exports.regionStartTag = new RegExp('#region');
+exports.regionEndTag = new RegExp('#endregion');
 function getAllRegionTags() {
     const textEditor = vscode.window.activeTextEditor;
     const document = textEditor.document;
     let lineNumbers = Array();
     for (let index = 0; index < document.lineCount; index++) {
         const line = document.lineAt(index);
-        if (line.text.search(regionStartTag) > -1)
+        if (line.text.search(exports.regionStartTag) > -1)
             lineNumbers.push(line.lineNumber);
     }
     return lineNumbers;
@@ -48,7 +48,7 @@ function testRegionTags() {
     let regionTagOrder = Array();
     for (let index = 0; index < document.lineCount; index++) {
         const line = document.lineAt(index);
-        if (line.text.search(regionStartTag) > -1) {
+        if (line.text.search(exports.regionStartTag) > -1) {
             const startLineTags = getLineTags(line.text);
             if (regionTagOrder.length === 0) { //not nested
                 regionTagOrder.push(startLineTags);
@@ -74,7 +74,7 @@ function testRegionTags() {
                 }
             }
         }
-        else if (line.text.search(regionEndTag) > -1) {
+        else if (line.text.search(exports.regionEndTag) > -1) {
             if (regionTagOrder.length === 0) {
                 vscode.window.showErrorMessage(`ERROR: (${index + 1}): Fold Client: Unbalanced region tags #endregion:#endregion`);
                 regionTagOrder.push([]);

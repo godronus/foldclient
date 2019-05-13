@@ -1,9 +1,19 @@
 'use strict';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const foldHelper = require("./foldHelper");
 const FoldClient = require("./MyFoldingRangeProvider");
 const IConfiguration = require("./IConfiguration");
+const foldHelper_1 = require("./foldHelper");
+const clientList = 'ae | all3 | amc | banijay | cineflix | demo | drg | itv | keshet | rtv | sky';
 function loadConfiguration() {
     let config = Object.assign({}, IConfiguration.DefaultConfiguration);
     return config;
@@ -43,20 +53,156 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('godronus-foldClient.wrapWithRegion', () => {
         wrapSelectedWithRegion();
     }));
-    function setVisibleClients() {
-        const config = vscode.workspace.getConfiguration('foldclient');
-        const clientConfigList = config.get("visibleClients", []).map((s) => s.toLowerCase());
-        vscode.window.showInputBox({
-            value: clientConfigList.join(', '),
-            placeHolder: 'Comma seperated list: e.g. itv, rtv, banijay',
-        }).then((newClientsStr) => {
-            const newClients = newClientsStr.split(',').map((cn) => cn.trim().toLowerCase()).filter((nm) => nm.length);
-            config.update("visibleClients", newClients, true).then(() => {
-                //could show update message here ??
-            });
+    context.subscriptions.push(vscode.commands.registerCommand('godronus-foldClient.wrapWithAllRegions', () => {
+        wrapSelectedWithRegion(clientList);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('godronus-foldClient.commentLines', () => {
+        commentSelectedLines();
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('godronus-foldClient.cleanRegionComments', () => {
+        cleanRegionComments();
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('godronus-foldClient.regionsNamed', () => {
+        showInputtedClientsRegions();
+    }));
+    function commentRegionLine(ate, lineNumber, cleanRegionTags = false) {
+        return new Promise((resolve, reject) => {
+            try {
+                ate.edit(edit => {
+                    const text = ate.document.lineAt(lineNumber).text;
+                    if (text.search(foldHelper_1.regionStartTag) === -1 && text.search(foldHelper_1.regionEndTag) === -1) {
+                        return resolve(); // Not a region tag row
+                    }
+                    const regionTagCommented = text.indexOf('*//*') !== -1;
+                    let currentText = '*//*', newText = '*/';
+                    if (!regionTagCommented) {
+                        // reopen comments for this region tag..
+                        currentText = '*/';
+                        newText = cleanRegionTags ? '*/' : '*//*';
+                    }
+                    const replacePos = text.indexOf(currentText);
+                    edit.delete(new vscode.Range(lineNumber, replacePos, lineNumber, replacePos + currentText.length));
+                    edit.insert(new vscode.Position(lineNumber, replacePos), newText);
+                }).then(() => {
+                    return resolve();
+                });
+            }
+            catch (error) {
+                reject(error);
+            }
         });
     }
-    function wrapSelectedWithRegion() {
+    function commentRegionTags(ate, startLine, endLine) {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                for (let lineNumber = startLine; lineNumber <= endLine; lineNumber += 1) {
+                    yield commentRegionLine(ate, lineNumber);
+                }
+                return resolve(true);
+            }
+            catch (error) {
+                return reject(false);
+            }
+        }));
+    }
+    function commentSelectedLines() {
+        let config = loadConfiguration();
+        if (vscode.window.activeTextEditor) {
+            /* #region Get the configuration for the current language */
+            const ate = vscode.window.activeTextEditor;
+            const languageId = ate.document.languageId;
+            const currentLanguageConfig = config["[" + languageId + "]"];
+            if (typeof currentLanguageConfig === "undefined" ||
+                !currentLanguageConfig) {
+                vscode.window.showInformationMessage("folderClient Region Folding. No region folding available for language '" +
+                    languageId + "'. Check that you have the language extension installed for these files.");
+                return;
+            }
+            /* #endregion */
+            /* #region Check if there is anything selected. */
+            if (ate.selections.length > 1 || ate.selections.length < 1) {
+                return;
+            }
+            const sel = ate.selection;
+            if (sel.isEmpty) {
+                return;
+            }
+            /* #endregion */
+            commentRegionTags(ate, sel.start.line, sel.end.line)
+                .then(() => {
+                ate.selections = [sel];
+                vscode.commands.executeCommand('editor.action.commentLine').then((fin) => {
+                    // Commenting finished..
+                });
+                ate.selections = [sel];
+            })
+                .catch(() => {
+                vscode.window.showInformationMessage('Error Commenting lines..');
+            });
+        }
+    }
+    function cleanRegionComments() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let config = loadConfiguration();
+            if (vscode.window.activeTextEditor) {
+                /* #region Get the configuration for the current language */
+                const ate = vscode.window.activeTextEditor;
+                const languageId = ate.document.languageId;
+                const currentLanguageConfig = config["[" + languageId + "]"];
+                if (typeof currentLanguageConfig === "undefined" ||
+                    !currentLanguageConfig) {
+                    vscode.window.showInformationMessage("folderClient Region Folding. No region folding available for language '" +
+                        languageId + "'. Check that you have the language extension installed for these files.");
+                    return;
+                }
+                /* #endregion */
+                const lineCount = ate.document.lineCount;
+                try {
+                    for (let lineNumber = 0; lineNumber <= lineCount; lineNumber += 1) {
+                        yield commentRegionLine(ate, lineNumber, true);
+                    }
+                }
+                catch (error) {
+                    vscode.window.showInformationMessage('Error Cleaning Region Tags');
+                }
+            }
+        });
+    }
+    function setVisibleClients() {
+        getClientsListFromUser()
+            .then((clientsList) => {
+            // Can display any info here after setting list..
+            // vscode.window.showInformationMessage('Client List: ' + clientsList);
+        });
+    }
+    function showInputtedClientsRegions() {
+        getClientsListFromUser()
+            .then((clientsList) => {
+            foldHelper.showOnlyNamedSettings();
+        });
+    }
+    function getClientsListFromUser() {
+        return new Promise((resolve, reject) => {
+            try {
+                const config = vscode.workspace.getConfiguration('foldclient');
+                const clientConfigList = config.get("visibleClients", []).map((s) => s.toLowerCase());
+                vscode.window.showInputBox({
+                    value: clientConfigList.join(', '),
+                    placeHolder: 'Comma seperated list: e.g. itv, rtv, banijay',
+                }).then((newClientsStr) => {
+                    const newClients = newClientsStr.split(',').map((cn) => cn.trim().toLowerCase()).filter((nm) => nm.length);
+                    config.update("visibleClients", newClients, true).then(() => {
+                        return resolve(newClients);
+                    });
+                });
+            }
+            catch (error) {
+                vscode.window.showInformationMessage(error.toString());
+                return reject(false);
+            }
+        });
+    }
+    function wrapSelectedWithRegion(clients = '') {
         let config = loadConfiguration();
         if (vscode.window.activeTextEditor) {
             /* #region Get the configuration for the current language */
@@ -89,7 +235,7 @@ function activate(context) {
             let regionStartTemplate = currentLanguageConfig.foldStart;
             const idx = regionStartTemplate.indexOf("[NAME]");
             const nameInsertionIndex = idx < 0 ? 0 : regionStartTemplate.length - "[NAME]".length - idx;
-            const regionStartText = regionStartTemplate.replace("[NAME]", "");
+            const regionStartText = regionStartTemplate.replace("[NAME]", clients);
             ate
                 .edit(edit => {
                 //Insert the #region, #endregion tags

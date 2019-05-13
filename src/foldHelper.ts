@@ -1,8 +1,8 @@
 'use strict';
 import * as vscode from 'vscode';
 
-const regionStartTag = new RegExp('#region');
-const regionEndTag = new RegExp('#endregion');
+export const regionStartTag = new RegExp('#region');
+export const regionEndTag = new RegExp('#endregion');
 
 function getAllRegionTags() {
   const textEditor = vscode.window.activeTextEditor;
