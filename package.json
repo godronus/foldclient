@@ -64,32 +64,32 @@
     "keybindings": [
       {
         "command": "godronus-foldClient.wrapWithRegion",
-        "key": "ctrl+m ctrl+r",
+        "key": "cmd+m cmd+r",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.wrapWithAllRegions",
-        "key": "ctrl+t ctrl+r",
+        "key": "cmd+t cmd+r",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.commentLines",
-        "key": "ctrl+m ctrl+/",
+        "key": "cmd+m cmd+/",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.cleanRegionComments",
-        "key": "ctrl+c ctrl+r",
+        "key": "cmd+c cmd+r",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.all",
-        "key": "ctrl+r ctrl+a",
+        "key": "cmd+r cmd+a",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.regionsNamed",
-        "key": "ctrl+r ctrl+n",
+        "key": "cmd+r cmd+n",
         "when": "editorTextFocus"
       }
     ],
