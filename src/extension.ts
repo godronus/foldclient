@@ -184,12 +184,8 @@ export function activate(context: vscode.ExtensionContext) {
       /* #endregion */
 
       const lineCount = ate.document.lineCount;
-      try {
-        for (let lineNumber = 0; lineNumber < lineCount; lineNumber += 1) {
-          await commentRegionLine(ate, lineNumber, true);
-        }
-      } catch (error) {
-        vscode.window.showInformationMessage('Error Cleaning Region Tags');
+      for (let lineNumber = 0; lineNumber < lineCount; lineNumber += 1) {
+        await commentRegionLine(ate, lineNumber, true);
       }
     }
   }
