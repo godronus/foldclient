@@ -185,7 +185,7 @@ export function activate(context: vscode.ExtensionContext) {
 
       const lineCount = ate.document.lineCount;
       try {
-        for (let lineNumber = 0; lineNumber <= lineCount; lineNumber += 1) {
+        for (let lineNumber = 0; lineNumber < lineCount; lineNumber += 1) {
           await commentRegionLine(ate, lineNumber, true);
         }
       } catch (error) {
