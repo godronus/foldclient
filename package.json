@@ -79,7 +79,7 @@
       },
       {
         "command": "godronus-foldClient.cleanRegionComments",
-        "key": "cmd+c cmd+r",
+        "key": "cmd+r cmd+c",
         "when": "editorTextFocus"
       },
       {

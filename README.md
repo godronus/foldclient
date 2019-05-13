@@ -26,7 +26,7 @@ The extension also installs commands to wrap a `region` comment around the curre
 
 - foldClient.commentLines (`cmd+m cmd+/`)  - comment lines stops region tags breaking comment block (Make Comments block)
 
-- foldClient.cleanRegionComments (`cmd+c cmd+r`)  - clean any leftover comment lines on region tags (Clean Regions)
+- foldClient.cleanRegionComments (`cmd+r cmd+c`)  - clean any leftover comment lines on region tags (Regions Clean)
 
 - foldClient.all (`cmd+r cmd+a`)  - unfolds all region tags (Regions All)
 
