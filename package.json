@@ -2,7 +2,7 @@
   "name": "foldclient",
   "displayName": "Fold Client code",
   "description": "Additional fold commands",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "publisher": "godronus",
   "icon": "foldclient.png",
   "engines": {
@@ -64,32 +64,32 @@
     "keybindings": [
       {
         "command": "godronus-foldClient.wrapWithRegion",
-        "key": "cmd+m cmd+r",
+        "key": "ctrl+m ctrl+r",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.wrapWithAllRegions",
-        "key": "cmd+t cmd+r",
+        "key": "ctrl+t ctrl+r",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.commentLines",
-        "key": "cmd+m cmd+/",
+        "key": "ctrl+m ctrl+/",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.cleanRegionComments",
-        "key": "cmd+r cmd+c",
+        "key": "ctrl+r ctrl+c",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.all",
-        "key": "cmd+r cmd+a",
+        "key": "ctrl+r ctrl+a",
         "when": "editorTextFocus"
       },
       {
         "command": "godronus-foldClient.regionsNamed",
-        "key": "cmd+r cmd+n",
+        "key": "ctrl+r ctrl+n",
         "when": "editorTextFocus"
       }
     ],
