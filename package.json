@@ -2,7 +2,7 @@
   "name": "foldclient",
   "displayName": "Fold Client code",
   "description": "Additional fold commands",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "publisher": "godronus",
   "icon": "foldclient.png",
   "engines": {

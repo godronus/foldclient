@@ -6,7 +6,7 @@ import * as IConfiguration from "./IConfiguration";
 
 import { regionStartTag, regionEndTag } from './foldHelper';
 
-const clientList = 'ae | all3 | amc | banijay | cineflix | demo | drg | itv | keshet | rtv | storylab | sky';
+const clientList = 'ae | all3 | amc | banijay | cineflix | demo | drg | endemol | itv | keshet | rtv | storylab | sky';
 
 function loadConfiguration() {
   let config: IConfiguration.IConfiguration = Object.assign(
