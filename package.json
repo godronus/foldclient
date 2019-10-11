@@ -120,7 +120,6 @@
   },
   "dependencies": {
     "lodash.debounce": "^4.0.8",
-    "lodash.orderby": "^4.6.0",
-    "vsce": "^1.64.0"
+    "lodash.orderby": "^4.6.0"
   }
 }
