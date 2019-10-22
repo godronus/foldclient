@@ -13,7 +13,7 @@ const foldHelper = require("./foldHelper");
 const FoldClient = require("./MyFoldingRangeProvider");
 const IConfiguration = require("./IConfiguration");
 const foldHelper_1 = require("./foldHelper");
-const clientList = 'ae | all3 | amc | banijay | cineflix | demo | drg | endemol | itv | keshet | rtv | storylab | sky';
+const clientList = 'ae | all3 | amc | banijay | cineflix | demo | drg | endemol | itv | keshet | rtv | storylab';
 function loadConfiguration() {
     let config = Object.assign({}, IConfiguration.DefaultConfiguration);
     return config;
